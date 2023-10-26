@@ -1,7 +1,10 @@
 const { Pool } = require("pg");
 
+/**
+ * @param {string} connectionString
+ */
 const pool = new Pool({
-  connectionString: process.env.SUPABASE_DB_URL,
+  connectionString: process.env.DEV_DB_URL,
   ssl: {
     rejectUnauthorized: false,
   },

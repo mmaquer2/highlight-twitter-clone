@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 //const cors = require("cors");
 // const authRoutes = require("./server/routes/authRoute");
-// const postRoutes = require("./server/routes/postRoute");
+const postRoutes = require("./server/routes/postRoute");
 // const followerRoutes = require("./server/routes/followerRoute");
 // const likeRoutes = require("./server/routes/likeRoute");
 // const cookieParser = require("cookie-parser");
@@ -13,7 +13,7 @@ if (process.env.NODE_ENV !== 'production') {
     console.log("dev mode... using dotenv config...") 
 }
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 
 console.log("starting server on port " + PORT);
@@ -22,7 +22,7 @@ console.log("starting server on port " + PORT);
 app.use(express.json());
 
 //app.use("/auth", authRoutes);
-//app.use("/post", postRoutes);
+app.use("/post", postRoutes);
 //app.use("/follower", followerRoutes);
 //app.use("/like", likeRoutes);
 if(process.env.NODE_ENV === 'dev') {

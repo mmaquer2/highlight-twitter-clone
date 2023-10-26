@@ -10,7 +10,7 @@ import Footer from './components/footer'
 
 
 export default function Home() {
-  axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL;
+  axios.defaults.baseURL = "http://localhost:3001"
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
