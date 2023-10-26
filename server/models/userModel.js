@@ -1,6 +1,7 @@
 const pool = require("../db");
 
 const createUser = async (user) => {
+  console.log("creating new user...")
   const { username, email, password } = user;
   try {
     const newUser = await pool.query(

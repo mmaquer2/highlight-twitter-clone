@@ -2,11 +2,7 @@ import axios from 'axios';
 
 const api = axios.create({ 
     baseURL: "http://localhost:3001",
-    headers: {
-        'Content-Type': 'application/json',
-    },
     withCredentials: true,
-
 });
 
 export const login = async (username:string, password:string) => {
@@ -34,7 +30,7 @@ export const login = async (username:string, password:string) => {
 
 export const checkAuthStatus = async () => {
   try {
-    const response = await axios.get("/auth/check-auth", {
+    const response = await axios.get("/api/auth/check-auth", {
       withCredentials: true,
     });
 
@@ -50,7 +46,7 @@ export const checkAuthStatus = async () => {
 export const logout = async () => {
   try {
     const response = await axios.post(
-      "/auth/logout",
+      "api/auth/logout",
       {},
       {
         withCredentials: true,
@@ -64,8 +60,9 @@ export const logout = async () => {
 };
 
 export const register = async (username:string, email:string, password:string) => {
-  try {
-    const resp = await axios.post("/auth/register", {
+    console.log("registering user...")
+    try {
+    const resp = await api.post("/api/auth/register", {
       username,
       email,
       password,

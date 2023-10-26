@@ -15,15 +15,11 @@ export default function Dashboard() {
         //getData();
     })
 
-    /**
-     * @param {
-     */
     async function getPostData() {
         console.log("fetching posts...")
-        const response = await fetchPosts();
+        //const response = await fetchPosts();
        // const data = await response.json()
        // console.log(data);
-
     }
 
     return(

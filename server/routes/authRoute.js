@@ -2,9 +2,13 @@ const router = require("express").Router();
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const authenticateToken = require("../middleware/authenticateToken");
+
 
 router.post("/register", async (req, res) => {
+  console.log("register route called");
   try {
+
     const { username, email, password } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = await User.createUser({
@@ -19,9 +23,9 @@ router.post("/register", async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      sameSite: "none",
+     
       secure: true,
-    }); // development only
+    }); 
 
     console.log("res status after created user:", res.status);
 
