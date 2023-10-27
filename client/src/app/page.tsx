@@ -1,17 +1,14 @@
 'use client'
 import styles from './page.module.css'
-import axios from 'axios'
 import { useState } from 'react'
-import { login } from './api/auth.api'
+import { loginUser } from './api/auth.api'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Footer from './components/footer'
 
 
-
 export default function Home() {
-  axios.defaults.baseURL = "http://localhost:3001"
-
+  
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
@@ -23,18 +20,22 @@ export default function Home() {
     console.log("login button pressed!");
     console.log(username);
     console.log(password);
+    submitUserLogin();
 
+    // TODO: set up login validation here
+    //setLoginError('Please enter a username and password');
 
-   if(username === '' || password === ''){
-    
-    //const resp = await login(username, password);
-    
-    //if(resp.status === 200){
-      //  console.log("login successful");
-      router.push('/dashboard');
-    // }
-   }
   }
+
+  const submitUserLogin = async () => {        
+    console.log("submitting login..")
+    const resp = await loginUser(username, password);
+    if(resp.status === 200){
+        console.log("login successful");
+        router.push('/dashboard');
+     }
+  }
+
   
   return (
     <main className={styles.main}>

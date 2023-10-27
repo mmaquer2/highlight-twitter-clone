@@ -1,3 +1,12 @@
+ -- v1 of the posts table, used for testing post routes
+CREATE TABLE posts (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL REFERENCES users(id),
+    content TEXT NOT NULL
+);
+
+
+-- v2 of the posts table
 CREATE TABLE posts (
     post_id SERIAL PRIMARY KEY,           -- Unique identifier for each post using SERIAL for auto-increment
     user_id INTEGER NOT NULL REFERENCES users(id),  -- Foreign key linking to the user who posted with a reference to 'users' table

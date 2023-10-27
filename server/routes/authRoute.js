@@ -7,9 +7,8 @@ const authenticateToken = require("../middleware/authenticateToken");
 
 router.post("/register", async (req, res) => {
   console.log("register route called");
-  try {
-    console.log("req.body:", req.body);
 
+  try {
     const { username, email, password } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = await User.createUser({
@@ -27,8 +26,6 @@ router.post("/register", async (req, res) => {
       secure: true,
     }); 
 
-   
-
     res.status(201).json({ token });
   } catch (err) {
     res.status(500).send(err.message);
@@ -37,8 +34,10 @@ router.post("/register", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   try {
+    console.log("login route called");
     const { username, password } = req.body;
     const user = await User.findUserByUsername(username);
+    console.log("attempting to login user... ", username);
 
     if (user === null) {
       return res.status(400).send("User not found");
@@ -49,9 +48,8 @@ router.post("/login", async (req, res) => {
         expiresIn: "1h",
       });
 
-      // Set the token in an HTTP-only cookie
-      res.cookie("token", token, { sameSite: "none", secure: true }); // development only
-
+      res.cookie("token", token, { sameSite: "none", secure: true }); 
+      
       return res.status(200).json({ login: "success" });
     }
 
@@ -68,7 +66,7 @@ router.post("/logout", (req, res) => {
 });
 
 router.get("/check-auth", authenticateToken, (req, res) => {
-  res.sendStatus(200); // if the authenticateToken middleware doesn't send a 401 or 403 status, the user is authenticated
+  res.sendStatus(200); 
 });
 
 module.exports = router;

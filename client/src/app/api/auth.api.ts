@@ -5,10 +5,11 @@ const api = axios.create({
     withCredentials: true,
 });
 
-export const login = async (username:string, password:string) => {
+export const loginUser = async (username:string, password:string):Promise<any> => {
+  console.log("logging in user...");
   try {
-    const response = await axios.post(
-      "/auth/login",
+    const response = await api.post(
+      "/api/auth/login",
       {
         username,
         password,
@@ -30,11 +31,10 @@ export const login = async (username:string, password:string) => {
 
 export const checkAuthStatus = async () => {
   try {
-    const response = await axios.get("/api/auth/check-auth", {
+    const response = await api.get("/api/auth/check-auth", {
       withCredentials: true,
     });
-
-    console.log("checking auth... ", response.status);
+    
     if (response.status === 200) {
       return response;
     }
@@ -46,7 +46,7 @@ export const checkAuthStatus = async () => {
 export const logout = async () => {
   try {
     const response = await axios.post(
-      "api/auth/logout",
+      "/api/auth/logout",
       {},
       {
         withCredentials: true,

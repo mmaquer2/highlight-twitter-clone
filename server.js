@@ -3,8 +3,6 @@ const app = express();
 const cors = require("cors");
 const authRoutes = require("./server/routes/authRoute");
 const postRoutes = require("./server/routes/postRoute");
-// const followerRoutes = require("./server/routes/followerRoute");
-// const likeRoutes = require("./server/routes/likeRoute");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 
@@ -14,7 +12,6 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const PORT = process.env.PORT || 3001;
-
 console.log("starting server on port " + PORT);
 
 app.use(cookieParser());
@@ -23,13 +20,9 @@ app.use(express.json());
 // TODO: for some reason cors only works in dev mode if I set origin to true,
 // does not function correctly when in the NODE_ENV dev mode
 app.use(cors({ credentials: true, origin: true }));
-
-
-
 app.use("/api/auth", authRoutes);
-app.use("/api/post", postRoutes);
-//app.use("/follower", followerRoutes);
-//app.use("/like", likeRoutes);
+app.use("/api/posts", postRoutes);
+
 
 if(process.env.NODE_ENV === 'dev') {    
     app.get('/', (req, res) => {
@@ -38,7 +31,6 @@ if(process.env.NODE_ENV === 'dev') {
 }
 
 if(process.env.NODE_ENV === 'production') {
-    console.log("yeet here")
     app.use(express.static(path.join(__dirname, "./client/build")));
     app.get("/", (req, res) => {
       res.sendFile(path.join(__dirname, "./client/build", "index.html"));
