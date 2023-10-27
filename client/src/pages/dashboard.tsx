@@ -1,12 +1,27 @@
 'use client'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import styles from '../app/page.module.css'
 import { fetchPosts, createPost } from '../app/api/post.api';
 
+/*
+* the Dashboard of an individual user, where they can see their posts and create new ones
+*
+*/
+
 export default function Dashboard() {
-    
+    const [posts, setPosts] = useState([]);
+    const [newPostContent, setNewContent] = useState('');
+
+
     useEffect(() => {
         console.log("dashboard mounted");
+
+        // TODO: fetch posts from the server, after login
+
+        // TODO: verify user is logged in
+
+        
+
     })
 
     async function getPostData() {
@@ -17,13 +32,18 @@ export default function Dashboard() {
 
     async function createNewPost(){
         console.log("create posts button pressed!")
-        const exampleData = "this is an example post"
-        const response = await createPost(exampleData);
+        
+        await createPost(newPostContent);
     }
 
     async function deleteUserPost(){
+        console.log("delete posts button pressed!")
+        //await deletePost();
+    }
 
 
+    async function goToUserSettings(){
+        console.log("go to user settings button pressed!")
         
     }
 
@@ -31,22 +51,24 @@ export default function Dashboard() {
     return (
 
     <main className={styles.main}>
-        <h1>Dashboard</h1>
-        <p>this is a dashboard!</p>
-
-
+        
+        
+        <p className={styles.text}>
+            Welcome to Highlights! A Twitter Clone.
+        </p>
+    
         <button onClick={getPostData}>Test Fetch Posts</button>
 
 
-        <input placeholder='some text for a post'></input>
+        <input onChange={(e)=>setNewContent(e.target.value)} placeholder='some text for a post'></input>
 
 
         <button onClick={createNewPost}>Submit New Post</button>
 
 
+        <button onClick={deleteUserPost}>Delete Post Button</button>
 
-
-        <button></button>
+        <button onClick={goToUserSettings}>Go To User Settings</button>
    
     </main>
     

@@ -1,5 +1,12 @@
 import axios from "axios";
 
+/**
+* 
+* contains all the api calls related to post component  
+* 
+*/
+
+
 const api = axios.create({ 
     baseURL: "http://localhost:3001",
     withCredentials: true,

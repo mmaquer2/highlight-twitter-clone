@@ -3,6 +3,7 @@ const app = express();
 const cors = require("cors");
 const authRoutes = require("./server/routes/authRoute");
 const postRoutes = require("./server/routes/postRoute");
+const timelineRoutes = require("./server/routes/timelineRoute");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 
@@ -22,7 +23,7 @@ app.use(express.json());
 app.use(cors({ credentials: true, origin: true }));
 app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
-
+app.use("/api/timeline", timelineRoutes);
 
 if(process.env.NODE_ENV === 'dev') {    
     app.get('/', (req, res) => {

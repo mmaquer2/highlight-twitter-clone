@@ -10,7 +10,6 @@ const fetchPosts = async (user_id) => {
         const result = await pool.query(`select * from posts where user_id = ${user_id}`);
         console.log(result.rows)
         return result.rows;
-    
     } catch(err){
         console.log(err);
         return err;
@@ -41,4 +40,25 @@ const createPost = async (user_id, content) => {
     }
 };
 
-module.exports = { fetchPosts, createPost }
+/**
+ * 
+ * @param {number} post_id id of post to delete 
+*/
+
+const deletePost = async (post_id) => {
+    try {
+        console.log("deleting post with id", post_id)
+        const result = await pool.query(
+            `DELETE FROM posts WHERE post_id = $1 RETURNING *`,
+            [post_id]
+          );
+        console.log(result.rows)
+        return result.rows;
+
+    } catch(err){
+        console.log("error deleting post: ", err);
+    }
+
+};
+
+module.exports = { fetchPosts, createPost, deletePost }
