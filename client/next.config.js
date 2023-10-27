@@ -1,5 +1,7 @@
 
 const nextConfig = {
+
+    // TODO: if process is not production, use dotenv config ...
     async rewrites() {
         return [
           {

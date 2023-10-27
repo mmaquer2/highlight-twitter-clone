@@ -8,6 +8,7 @@ const authenticateToken = require("../middleware/authenticateToken");
 router.post("/register", async (req, res) => {
   console.log("register route called");
   try {
+    console.log("req.body:", req.body);
 
     const { username, email, password } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -23,11 +24,10 @@ router.post("/register", async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-     
       secure: true,
     }); 
 
-    console.log("res status after created user:", res.status);
+   
 
     res.status(201).json({ token });
   } catch (err) {

@@ -15,12 +15,16 @@ if (process.env.NODE_ENV !== 'production') {
 
 const PORT = process.env.PORT || 3001;
 
-
 console.log("starting server on port " + PORT);
 
 app.use(cookieParser());
-app.use(cors({ credentials: true, origin: true }));
 app.use(express.json());
+
+// TODO: for some reason cors only works in dev mode if I set origin to true,
+// does not function correctly when in the NODE_ENV dev mode
+app.use(cors({ credentials: true, origin: true }));
+
+
 
 app.use("/api/auth", authRoutes);
 app.use("/api/post", postRoutes);
@@ -28,10 +32,6 @@ app.use("/api/post", postRoutes);
 //app.use("/like", likeRoutes);
 
 if(process.env.NODE_ENV === 'dev') {    
-
- 
-    
-
     app.get('/', (req, res) => {
         res.send('hello from the dev highlights server!!');
     });

@@ -3,11 +3,20 @@ const pool = require("../db");
 const createUser = async (user) => {
   console.log("creating new user...")
   const { username, email, password } = user;
+
+  console.log("body of the request in user model")
+  console.log("user:", username);
+  console.log("email:", email);
+  console.log("password:", password );
+
   try {
     const newUser = await pool.query(
       "INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING *",
       [username, email, password]
     );
+    
+    // get the status of the query
+
     return newUser.rows[0];
   } catch (err) {
     return err.message;
