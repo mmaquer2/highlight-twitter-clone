@@ -35,6 +35,19 @@ cd into client and run `npm install`
 | PORT | 3000 |
 | DATABASE_URL | your-database-conneciton string |
 
+5. create a db.js file in the /server directory with a connection to your database
+
+```javascript
+const { Pool } = require("pg");
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL || "your-database-conneciton string",
+});
+
+module.exports = pool;
+
+```
+
 
 ### Deployment Instructions:
 - next js client and node app deployed on heroku
