@@ -12,23 +12,18 @@ export default function Dashboard() {
   const [posts, setPosts] = useState([]);
   const [newPostContent, setNewContent] = useState("");
 
-  useEffect(() => {
-    console.log("dashboard mounted");
-
-    // TODO: fetch posts from the server, after login
-
-    // TODO: verify user is logged in
-  });
-
   async function getPostData() {
     console.log("fetch posts button pressed!");
-    const response = await fetchPosts();
-    console.log(response.data);
+    const data = await fetchPosts();
+    if(data){
+        setPosts(data);
+        console.log(data)
+    }
+
   }
 
   async function createNewPost() {
     console.log("create posts button pressed!");
-
     await createPost(newPostContent);
   }
 
@@ -43,20 +38,31 @@ export default function Dashboard() {
 
   return (
     <main className={styles.main}>
-      <p className={styles.text}>Welcome to Highlights! A Twitter Clone.</p>
+        <p className={styles.text}>Welcome to your highlights.</p>
 
-      <button onClick={getPostData}>Test Fetch Posts</button>
+        <button onClick={getPostData}>Test Fetch Posts</button>
 
-      <input
+        <input
         onChange={(e) => setNewContent(e.target.value)}
         placeholder="some text for a post"
-      ></input>
+        ></input>
 
-      <button onClick={createNewPost}>Submit New Post</button>
+        <button onClick={createNewPost}>Submit New Post</button>
 
-      <button onClick={deleteUserPost}>Delete Post Button</button>
+        <button onClick={deleteUserPost}>Delete Post Button</button>
 
-      <button onClick={goToUserSettings}>Go To User Settings</button>
+        <button onClick={goToUserSettings}>Go To User Settings</button>
+
+        <p>Your Posts:</p>  
+
+        <ul>
+            {posts.map((post:any) => (
+            <li key={post.id}>{post.content}</li>
+            ))}
+        </ul>
+
+
+
     </main>
   );
 }

@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const User = require("../models/userModel");
+const Posts = require("../models/postModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const authenticateToken = require("../middleware/authenticateToken");
@@ -49,11 +50,10 @@ router.post("/login", async (req, res) => {
 
       res.cookie("token", token, { sameSite: "none", secure: true });
 
+      Posts.fetchPosts(user.id);
+      
       //TODO:
-      // execute calls to cache user data in redis prior to loading user pages
-
       // User.fetchFollowing(user.id);
-      // User.fetchPosts(user.id);
       // Timeline.generateTimeline(user.id);
 
       return res.status(200).json({ login: "success" });

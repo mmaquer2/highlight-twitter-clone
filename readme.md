@@ -14,11 +14,14 @@ A twitter clone built with Next.js, Node.js, Express, and PostgreSQL.
 
 ### Front End:
 
-    - built with create next.js app
+    - built with create next.js app.
 
 ### Back End:
 
-    - Node.js and Express with PostgreSQL database
+    - Node.js and Express with PostgreSQL database.
+    - caching with Redis
+    - websockets for messaging
+    - AWS S3 for storing user profile images
 
 ## Installation and Set up Instructions:
 
@@ -63,13 +66,24 @@ redis-server # to start the server
 redis-cli # to start the redis cli
 ```
 
-6a. redis server setup on heroku and redis cloud
+8. AWS S3 setup:
+   [aws s3 docs](https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/getting-started-nodejs.html)
 
-WIP
+   - used for storing user profile images and other media
+
+ /// WIP ///
+
+
+9. start-up
+run the app in the root of the project run `node server.js`and in the client directory run `npm run dev`
+
+- the app will be running on localhost:3000, and server on localhost:3001
+
+ /// WIP ///
 
 ### Testing:
 
-WIP
+ /// WIP ///
 
 ### Deployment
 
@@ -82,8 +96,15 @@ WIP
 - create a new project
 
 ### Heroku Instructions:
+-   create a heroku account
+-   create a new app
+
 
 ### Web Socket Instructions:
 
 https://devcenter.heroku.com/articles/node-websockets
 this app uses web sockets to send messages between users, and trigger database updates.
+
+
+### Redis Cloud
+ /// WIP ///

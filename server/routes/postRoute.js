@@ -54,41 +54,29 @@ router.get("/get", authenticateToken, async (req, res) => {
 });
 
 router.post("/create", authenticateToken, async (req, res) => {
-  console.log("creating a new post...");
-  try {
-    const user_id = req.user.id;
-    const content = req.body.content;
-    const newPost = await Post.createPost(user_id, content);
-
-    // TODO:
-    // update redis cache with new post
-
-    const value = await client.get(`user_posts_${user_id}`);
-    const posts = JSON.parse(value);
-    posts.push(newPost);
-    await client.set(
-      `user_posts_${user_id}`,
-      JSON.stringify(posts),
-      "EX",
-      1000,
-    );
-
-    res.status(201).json(newPost);
-  } catch (err) {
-    console.log("Error creating a new post: ", err);
-    res.status(500).json(err);
-  }
-});
+    console.log("creating a new post...");
+    const client = req.app.locals.redisClient;
+    try {
+      const user_id = req.user.id;
+      const content = req.body.content;
+      const newPost = await Post.createPost(user_id, content);
+      await client.del(`user_posts_${user_id}`); // Invalidate the cache for this user's posts
+  
+      res.status(201).json(newPost);
+    } catch (err) {
+      console.log("Error creating a new post: ", err);
+      res.status(500).json(err);
+    }
+  });
 
 router.delete("/delete", authenticateToken, async (req, res) => {
   console.log("deleting a post...");
   try {
+    const client = req.app.locals.redisClient;
     const { post_id } = req.body;
+    const user_id = req.user.id;
     const deletedPost = await Post.deletePost(post_id);
-
-    //TODO:
-    // update redis cache with deleted post
-
+    await client.del(`user_posts_${user_id}`); // Invalidate the cache for this user's posts
     res.status(200).json(deletedPost);
   } catch (err) {
     console.log("Error deleting a post: ", err);
