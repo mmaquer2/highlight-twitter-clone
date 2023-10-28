@@ -1,17 +1,17 @@
 const pool = require("../db");
 
 const createUser = async (user) => {
-  console.log("creating new user...")
+  console.log("creating new user...");
   const { username, email, password } = user;
 
   try {
     const newUser = await pool.query(
       "INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING *",
-      [username, email, password]
+      [username, email, password],
     );
     return newUser.rows[0];
   } catch (err) {
-    console.log(err.message)
+    console.log(err.message);
     return err.message;
   }
 };
@@ -28,48 +28,46 @@ const findUserByUsername = async (username) => {
     }
 
     return user.rows[0];
-    
   } catch (err) {
     console.error(err.message);
   }
 };
 
 /**
-* 
-* Below are the routes for the followers table and operations
-* 
-* 
-*/
+ * =========== Follower User Routes and Operations ==============
+ * Below are the routes for the followers table and operations
+ *
+ *
+ */
+
+const getAllFollowersByUser = async (user_id) => {
+  const client = req.app.locals.redisClient;
+
+  try {
+  } catch (err) {}
+};
 
 // this is the search hook on the timeline page to lookup new followers or friends
 
-const searchForUsername= () => {
-
+const searchForUsername = () => {
   //TODO:
-
-
 };
-
 
 /**
  * creates a connetion between the loggined in user and teh user they are following
- * @param {string} user_id 
- * @param {string} follower_id 
+ * @param {string} user_id
+ * @param {string} follower_id
  */
-const createNewFollower = async(user_id, follower_id) => {
+const createNewFollower = async (user_id, follower_id) => {
+  console.log("creating new follower...");
 
-  //TODO: 
-
-
+  //TODO:
 };
-
-
-
-
 
 module.exports = {
   createUser,
   findUserByUsername,
   searchForUsername,
   createNewFollower,
+  getAllFollowersByUser,
 };

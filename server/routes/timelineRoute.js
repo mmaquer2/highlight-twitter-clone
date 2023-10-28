@@ -1,38 +1,29 @@
-const router = require('express').Router();
-const Post = require('../models/postModel.js');
-const User = require('../models/userModel.js');
-const authenticateToken = require("../middleware/authenticateToken"); 
-
+const router = require("express").Router();
+const Post = require("../models/postModel.js");
+const User = require("../models/userModel.js");
+const authenticateToken = require("../middleware/authenticateToken");
 
 /**
- * 
- * 
+ *
+ *
  */
 
-router.get('/generate', authenticateToken, async (req, res) => {
-    console.log("generating user timeline...")
-    
-    // get cache of users following list
+router.get("/generate", authenticateToken, async (req, res) => {
+  console.log("generating user timeline...");
 
-    // get posts from users in following list
+  // get cache of users following list
 
-    // order posts by date and time
+  // get posts from users in following list
 
-    // cache posts in redis
+  // order posts by date and time
 
-    // return posts to client
+  // cache posts in redis
 
-
-
-
+  // return posts to client
 });
 
-
-router.get('/update', authenticateToken, async (req, res) => {
-    console.log("generating user timeline...")
-    
-
-
+router.get("/update", authenticateToken, async (req, res) => {
+  console.log("generating user timeline...");
 });
 
 module.exports = router;

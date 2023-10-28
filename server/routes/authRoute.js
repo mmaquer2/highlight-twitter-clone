@@ -4,7 +4,6 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const authenticateToken = require("../middleware/authenticateToken");
 
-
 router.post("/register", async (req, res) => {
   console.log("register route called");
 
@@ -24,7 +23,7 @@ router.post("/register", async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: true,
-    }); 
+    });
 
     res.status(201).json({ token });
   } catch (err) {
@@ -48,8 +47,15 @@ router.post("/login", async (req, res) => {
         expiresIn: "1h",
       });
 
-      res.cookie("token", token, { sameSite: "none", secure: true }); 
-      
+      res.cookie("token", token, { sameSite: "none", secure: true });
+
+      //TODO:
+      // execute calls to cache user data in redis prior to loading user pages
+
+      // User.fetchFollowing(user.id);
+      // User.fetchPosts(user.id);
+      // Timeline.generateTimeline(user.id);
+
       return res.status(200).json({ login: "success" });
     }
 
@@ -66,7 +72,7 @@ router.post("/logout", (req, res) => {
 });
 
 router.get("/check-auth", authenticateToken, (req, res) => {
-  res.sendStatus(200); 
+  res.sendStatus(200);
 });
 
 module.exports = router;

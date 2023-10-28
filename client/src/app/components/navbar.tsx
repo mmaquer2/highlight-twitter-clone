@@ -4,16 +4,8 @@
 
 */
 
-
 export const Navbar = () => {
-    const styles = {
+  const styles = {};
 
-    }
-
-    return (
-       
-       <Navbar></Navbar>
-    );
-
-
+  return <Navbar></Navbar>;
 };

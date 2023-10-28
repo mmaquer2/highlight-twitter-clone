@@ -1,11 +1,14 @@
-import axios from 'axios';
+import axios from "axios";
 
-const api = axios.create({ 
-    baseURL: "http://localhost:3001",
-    withCredentials: true,
+const api = axios.create({
+  baseURL: "http://localhost:3001",
+  withCredentials: true,
 });
 
-export const loginUser = async (username:string, password:string):Promise<any> => {
+export const loginUser = async (
+  username: string,
+  password: string,
+): Promise<any> => {
   console.log("logging in user...");
   try {
     const response = await api.post(
@@ -16,7 +19,7 @@ export const loginUser = async (username:string, password:string):Promise<any> =
       },
       {
         withCredentials: true,
-      }
+      },
     );
 
     if (response.status === 200) {
@@ -34,7 +37,7 @@ export const checkAuthStatus = async () => {
     const response = await api.get("/api/auth/check-auth", {
       withCredentials: true,
     });
-    
+
     if (response.status === 200) {
       return response;
     }
@@ -50,7 +53,7 @@ export const logout = async () => {
       {},
       {
         withCredentials: true,
-      }
+      },
     );
     console.log("User logged out");
     return response;
@@ -59,9 +62,13 @@ export const logout = async () => {
   }
 };
 
-export const register = async (username:string, email:string, password:string) => {
-    console.log("registering user...")
-    try {
+export const register = async (
+  username: string,
+  email: string,
+  password: string,
+) => {
+  console.log("registering user...");
+  try {
     const resp = await api.post("/api/auth/register", {
       username,
       email,
