@@ -15,11 +15,10 @@ export default function Dashboard() {
   async function getPostData() {
     console.log("fetch posts button pressed!");
     const data = await fetchPosts();
-    if(data){
-        setPosts(data);
-        console.log(data)
+    if (data) {
+      setPosts(data);
+      console.log(data);
     }
-
   }
 
   async function createNewPost() {
@@ -38,31 +37,28 @@ export default function Dashboard() {
 
   return (
     <main className={styles.main}>
-        <p className={styles.text}>Welcome to your highlights.</p>
+      <p className={styles.text}>Welcome to your highlights.</p>
 
-        <button onClick={getPostData}>Test Fetch Posts</button>
+      <button onClick={getPostData}>Test Fetch Posts</button>
 
-        <input
+      <input
         onChange={(e) => setNewContent(e.target.value)}
         placeholder="some text for a post"
-        ></input>
+      ></input>
 
-        <button onClick={createNewPost}>Submit New Post</button>
+      <button onClick={createNewPost}>Submit New Post</button>
 
-        <button onClick={deleteUserPost}>Delete Post Button</button>
+      <button onClick={deleteUserPost}>Delete Post Button</button>
 
-        <button onClick={goToUserSettings}>Go To User Settings</button>
+      <button onClick={goToUserSettings}>Go To User Settings</button>
 
-        <p>Your Posts:</p>  
+      <p>Your Posts:</p>
 
-        <ul>
-            {posts.map((post:any) => (
-            <li key={post.id}>{post.content}</li>
-            ))}
-        </ul>
-
-
-
+      <ul>
+        {posts.map((post: any) => (
+          <li key={post.id}>{post.content}</li>
+        ))}
+      </ul>
     </main>
   );
 }

@@ -71,16 +71,13 @@ redis-cli # to start the redis cli
 
    - used for storing user profile images and other media
 
-
-
 9. start-up
-run the app in the root of the project run `node server.js`and in the client directory run `npm run dev`
+   run the app in the root of the project run `node server.js`and in the client directory run `npm run dev`
 
 - the app will be running on localhost:3000, and server on localhost:3001
 
- 
-
 ### Testing:
+
 WIP
 
 ### Deployment
@@ -94,15 +91,15 @@ WIP
 - create a new project
 
 ### Heroku Instructions:
--   create a heroku account
--   create a new app
 
+- create a heroku account
+- create a new app
 
 ### Web Socket Instructions:
 
 https://devcenter.heroku.com/articles/node-websockets
 this app uses web sockets to send messages between users, and trigger database updates.
 
-
 ### Redis Cloud
- WIP 
+
+WIP

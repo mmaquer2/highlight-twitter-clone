@@ -51,7 +51,7 @@ router.post("/login", async (req, res) => {
       res.cookie("token", token, { sameSite: "none", secure: true });
 
       Posts.fetchPosts(user.id);
-      
+
       //TODO:
       // User.fetchFollowing(user.id);
       // Timeline.generateTimeline(user.id);

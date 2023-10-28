@@ -54,20 +54,20 @@ router.get("/get", authenticateToken, async (req, res) => {
 });
 
 router.post("/create", authenticateToken, async (req, res) => {
-    console.log("creating a new post...");
-    const client = req.app.locals.redisClient;
-    try {
-      const user_id = req.user.id;
-      const content = req.body.content;
-      const newPost = await Post.createPost(user_id, content);
-      await client.del(`user_posts_${user_id}`); // Invalidate the cache for this user's posts
-  
-      res.status(201).json(newPost);
-    } catch (err) {
-      console.log("Error creating a new post: ", err);
-      res.status(500).json(err);
-    }
-  });
+  console.log("creating a new post...");
+  const client = req.app.locals.redisClient;
+  try {
+    const user_id = req.user.id;
+    const content = req.body.content;
+    const newPost = await Post.createPost(user_id, content);
+    await client.del(`user_posts_${user_id}`); // Invalidate the cache for this user's posts
+
+    res.status(201).json(newPost);
+  } catch (err) {
+    console.log("Error creating a new post: ", err);
+    res.status(500).json(err);
+  }
+});
 
 router.delete("/delete", authenticateToken, async (req, res) => {
   console.log("deleting a post...");

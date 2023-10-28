@@ -1,5 +1,10 @@
 const pool = require("../db");
 
+/**
+ * function to create a new user in the database
+ * @param {object} user (username,email,password)
+ * @returns
+ */
 const createUser = async (user) => {
   console.log("creating new user...");
   const { username, email, password } = user;
@@ -15,6 +20,12 @@ const createUser = async (user) => {
     return err.message;
   }
 };
+
+/**
+ * looks up a user by their username
+ * @param {string} username
+ * @returns user object || null
+ */
 
 const findUserByUsername = async (username) => {
   try {
@@ -40,6 +51,12 @@ const findUserByUsername = async (username) => {
  *
  */
 
+/**
+ *
+ * @param {number} user_id
+ */
+
+//TODO:
 const getAllFollowersByUser = async (user_id) => {
   const client = req.app.locals.redisClient;
 
