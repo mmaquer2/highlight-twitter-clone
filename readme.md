@@ -71,7 +71,6 @@ redis-cli # to start the redis cli
 
    - used for storing user profile images and other media
 
- /// WIP ///
 
 
 9. start-up
@@ -79,11 +78,10 @@ run the app in the root of the project run `node server.js`and in the client dir
 
 - the app will be running on localhost:3000, and server on localhost:3001
 
- /// WIP ///
+ 
 
 ### Testing:
-
- /// WIP ///
+WIP
 
 ### Deployment
 
@@ -107,4 +105,4 @@ this app uses web sockets to send messages between users, and trigger database u
 
 
 ### Redis Cloud
- /// WIP ///
+ WIP 
