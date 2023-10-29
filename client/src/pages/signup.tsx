@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { register } from "@/app/api/auth.api";
-import styles from "../app/signups.module.css";
+import styles from "../styles/signups.module.css";
 
 export default function Signup() {
   const [username, setUsername] = useState("");
