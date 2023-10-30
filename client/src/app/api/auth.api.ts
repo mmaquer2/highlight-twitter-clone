@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:3001",
+  baseURL: "http://localhost:3001", //TODO: change this to process env variable
   withCredentials: true,
 });
 
@@ -31,6 +31,7 @@ export const loginUser = async (
     return error;
   }
 };
+
 
 export const checkAuthStatus = async () => {
   try {

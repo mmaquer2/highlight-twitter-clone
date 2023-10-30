@@ -1,46 +1,69 @@
 import React from 'react';
+import Image from 'next/image';
 import styles from '../../styles/Navbar.module.css';
+import { generalSearch } from '../api/search.api';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import '../globals.css'
-
-/*
-
-// navbar
-
-*/
-
-
 
 
 function Navbar() {
+  const [searchInput, setSearchInput] = React.useState('');
+
+  const handleSearch = async (e: any) => {
+    e.preventDefault();
+    console.log("searching...");
+    console.log(searchInput);
+    const data = await generalSearch(searchInput);
+    console.log("data from search api call");
+    console.log(data);
+
+    //TODO: handle search funciton for finding users, and trending topics
+
+  };
+
+  async function goToUserSettings() {
+    console.log("go to user settings button pressed!");
+  }
+
+  async function goToUserTimeline() {
+    console.log("go to user timeline button pressed!");
+  }
+
+  async function gotoDashboard() {
+    console.log("go to dashboard button pressed!");
+  };
+
+  async function handleLogout() {
+    console.log("logout button pressed!");
+  }
+
+  function handleMore() {
+    console.log("more button pressed!");
+  }
+
   return (
     <div className={styles.navbar}>
+
       <div className={styles.logo}>
-        <img src="/path-to-your-logo.png" alt="Logo" />
+        <Image width={3} height={3} src="/path-to-your-logo.png" alt="Logo" />
       </div>
+
+     
       <div className={styles.menu}>
-        <a href="#">Docs</a>
-        <div className={styles.dropdown}>
-          <a href="#">Server API</a>
-          <div className={styles.dropdownContent}>
-            <a href="#">Option 1</a>
-            <a href="#">Option 2</a>
-          </div>
-        </div>
-        <div className={styles.dropdown}>
-          <a href="#">Client API</a>
-          <div className={styles.dropdownContent}>
-            <a href="#">Option 1</a>
-            <a href="#">Option 2</a>
-          </div>
-        </div>
-        <a href="#">Ecosystem</a>
-        <a href="#">About</a>
+
+        <button className={styles.button} type='submit' onClick={gotoDashboard}>Dashboard</button>
+        <button className={styles.button} type='submit' onClick={goToUserTimeline}>User Timeline</button>
+
+        <input onChange={(e)=>{setSearchInput(e.target.value)}} placeholder='search'></input>
+        <button className={styles.button} type='submit' onClick={handleSearch}>Search</button>
+    
+
+      <button className={styles.button} type='submit' onClick={goToUserSettings}>User Settings</button>
+
+      <button className={styles.button} type='submit' onClick={handleLogout}>Logout</button>
       </div>
-      <div className={styles.rightMenu}>
-        <a href="#">4.x</a>
-        <a href="#">English</a>
-        <a href="#">Search</a>
-      </div>
+
+
     </div>
   );
 }

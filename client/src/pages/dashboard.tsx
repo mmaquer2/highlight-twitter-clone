@@ -8,13 +8,17 @@ import PostCard from "@/app/components/postcard";
 
 
 /*
- * the Dashboard of an individual user, where they can see their posts and create new ones
+ * The dashboard of an individual user, where they can see their posts, create new posts, and view account stats.
  *
  */
 
 export default function Dashboard() {
   const [posts, setPosts] = useState([]);
+  const [followers, setFollowers] = useState([]); //TODO:
+  const [following, setFollowing] = useState([]);   //TODO:
   const [newPostContent, setNewContent] = useState("");
+  const [username, setUsername] = useState("");  // TODO:
+  const [avatarLink, setAvatarLink] = useState(""); // TODO:
 
   async function getPostData() {
     console.log("fetch posts button pressed!");
@@ -28,6 +32,7 @@ export default function Dashboard() {
   async function createNewPost() {
     console.log("create posts button pressed!");
     await createPost(newPostContent);
+    await getPostData();
   }
 
   async function deleteUserPost() {
@@ -35,15 +40,14 @@ export default function Dashboard() {
     //await deletePost();
   }
 
-  async function goToUserSettings() {
-    console.log("go to user settings button pressed!");
-  }
-
   return (
     
     <main className={styles.main}>
      <Navbar />
       <p className={styles.text}>Welcome to your highlights.</p>
+      <p>Followers: {followers.length}</p>
+      <p>Following: {following.length}</p>
+        <p>Posts: {posts.length}</p> 
 
       <input
         className={styles.input}
@@ -55,15 +59,11 @@ export default function Dashboard() {
 
       <button className={styles.button} type="submit" onClick={getPostData}>Test Fetch Posts</button>
 
-      <button className={styles.button} type="submit" onClick={deleteUserPost}>Delete Post Button</button>
-
-      <button className={styles.button} type="submit" onClick={goToUserSettings}>Go To User Settings</button>
-
       <p className={styles.text} >Your Posts:</p>
 
       <div>
         {posts.map((post: any) => (
-          <PostCard key={post.id} id={post.id} content={post.content} />
+          <PostCard key={post.id} id={post.id} content={post.content} time={post.posted_at} avatar="" />
         ))}
       </div>
 

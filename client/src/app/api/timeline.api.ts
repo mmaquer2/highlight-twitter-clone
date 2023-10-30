@@ -1,7 +1,7 @@
 import axios from "axios";
 
 /*
- * contains all the api calls related to timeline component
+ * Contains all the api calls related to timeline component
  *
  */
 

@@ -2,7 +2,7 @@ import axios from "axios";
 
 /**
  *
- * contains all the api calls related to post component
+ * Contains all the api calls related to post component
  *
  */
 
@@ -41,4 +41,13 @@ export const deleteUserPost = async (post_id: string) => {
   } catch (err) {
     console.log(err);
   }
+};
+
+
+export const likePost = async (post_id: string) => {
+
+};
+
+export const unlikePost = async (post_id: string) => {
+  
 };

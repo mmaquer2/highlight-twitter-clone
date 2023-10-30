@@ -1,7 +1,5 @@
 ### Highlights -- a twitter clone
 
-### Project Description:
-
 A twitter clone built with Next.js, Node.js, Express, and PostgreSQL.
 
 ### Features:
@@ -19,9 +17,9 @@ A twitter clone built with Next.js, Node.js, Express, and PostgreSQL.
 ### Back End:
 
     - Node.js and Express with PostgreSQL database.
-    - caching with Redis
-    - websockets for messaging
-    - AWS S3 for storing user profile images
+    - caching with Redis.
+    - websockets for messaging.
+    - AWS S3 for storing user profile images.
 
 ## Installation and Set up Instructions:
 
@@ -80,7 +78,8 @@ redis-cli # to start the redis cli
 
 WIP
 
-### Deployment
+### Deployment Instructions:
+
 
 - next js client and node app deployed on heroku
 - postgres database deployed on supabase
@@ -99,7 +98,11 @@ WIP
 
 https://devcenter.heroku.com/articles/node-websockets
 this app uses web sockets to send messages between users, and trigger database updates.
+https://socket.io/get-started/chat
 
-### Redis Cloud
-
+### Redis Cloud Instructions:
 WIP
+
+
+### Icons Setup:
+https://mui.com/material-ui/getting-started/installation/
