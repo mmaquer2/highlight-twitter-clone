@@ -9,6 +9,17 @@ interface PostCardProps {
   }
   
   const PostCard: React.FC<PostCardProps> = ({ id, content }) => {
+
+    // TODO: handlers for like, comment, and share buttons
+
+    const handleLike = () => {
+
+    }
+
+    const handleComment = () => {
+
+    }
+
     return (
       <div className={styles.card}>
         <p className={styles.content}>{content}</p>
