@@ -21,7 +21,8 @@ const generalSearch = async (user_id, searchString) => {
             `select * from users where username like '%${searchString}%'`,
         );
         console.log(result.rows);
-        
+            
+        //TODO: lookup follower connections
 
         //TODO: search for trends and posts as well
 
@@ -29,14 +30,17 @@ const generalSearch = async (user_id, searchString) => {
         
         //TODO: parse data on search return to include is_following, is_followed_by, is_self
         result.rows.forEach((user) => {
+            
+           if (user.id !== user_id) // don't include the loggedin user in the search results 
+           {       
             resultData.push({
                 user_id: user.id,
                 username: user.username,
-                // profile_picture: user.profile_picture,
-                // is_following: false,
-                // is_followed_by: false,
-                // is_self: false,
+                avatar: "",
+                is_following: false,
+                is_followed_by: false,
             });
+            }
         });
 
         

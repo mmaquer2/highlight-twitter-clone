@@ -35,15 +35,11 @@ export default function Dashboard() {
     await getPostData();
   }
 
-  async function deleteUserPost() {
-    console.log("delete posts button pressed!");
-    //await deletePost();
-  }
-
   return (
-    
+    <div>
+    <Navbar />
     <main className={styles.main}>
-     <Navbar />
+     
       <p className={styles.text}>Welcome to your highlights.</p>
       <p>Followers: {followers.length}</p>
       <p>Following: {following.length}</p>
@@ -55,19 +51,19 @@ export default function Dashboard() {
         placeholder="Whats going on today?"
       ></input>
 
-      <button className={styles.button} type="submit" onClick={createNewPost}>Submit New Post</button>
+      <button className={styles.button} type="submit" onClick={createNewPost}>Post Highlight</button>
 
       <button className={styles.button} type="submit" onClick={getPostData}>Test Fetch Posts</button>
 
-      <p className={styles.text} >Your Posts:</p>
-
+    
       <div>
         {posts.map((post: any) => (
-          <PostCard key={post.id} id={post.id} content={post.content} time={post.posted_at} avatar="" />
+          <PostCard key={post.id} owner ={post.user_id} id={post.id} content={post.content} time={post.posted_at} avatar="" />
         ))}
       </div>
 
 
     </main>
+    </div>
   );
 }

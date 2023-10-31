@@ -2,12 +2,25 @@ import React from 'react';
 import Image from 'next/image';
 import styles from '../../styles/Navbar.module.css';
 import { generalSearch } from '../api/search.api';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import '../globals.css'
+import ScoreboardIcon from '@mui/icons-material/Scoreboard';
+import '../globals.css';
+import Popper from '@mui/material/Popper';
+import Paper from '@mui/material/Paper';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 
-function Navbar() {
+export default function Navbar() {
   const [searchInput, setSearchInput] = React.useState('');
+  const [searchResults, setSearchResults] = React.useState([]);
+  const [open, setOpen] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const router = useRouter();
+
 
   const handleSearch = async (e: any) => {
     e.preventDefault();
@@ -16,11 +29,17 @@ function Navbar() {
     const data = await generalSearch(searchInput);
     console.log("data from search api call");
     console.log(data);
-
-    //TODO: handle search funciton for finding users, and trending topics
-
+    setSearchResults(data);  // Assuming data is an array of results.
+    if (data && data.length > 0) {
+      setOpen(true);
+    }
   };
 
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  
   async function goToUserSettings() {
     console.log("go to user settings button pressed!");
   }
@@ -31,43 +50,38 @@ function Navbar() {
 
   async function gotoDashboard() {
     console.log("go to dashboard button pressed!");
+    router.push('/dashboard');
   };
-
-  async function handleLogout() {
-    console.log("logout button pressed!");
-  }
-
-  function handleMore() {
-    console.log("more button pressed!");
-  }
 
   return (
     <div className={styles.navbar}>
+      <ScoreboardIcon className={styles.icon} onClick={gotoDashboard} />
+      <input 
+        onChange={(e) => { setSearchInput(e.target.value); }}
+        placeholder='search'
+        onClick={(e) => setAnchorEl(e.currentTarget)}
+      />
+      <button className={styles.button} type='submit' onClick={handleSearch}>Search</button>
 
-      <div className={styles.logo}>
-        <Image width={3} height={3} src="/path-to-your-logo.png" alt="Logo" />
-      </div>
-
-     
-      <div className={styles.menu}>
-
-        <button className={styles.button} type='submit' onClick={gotoDashboard}>Dashboard</button>
-        <button className={styles.button} type='submit' onClick={goToUserTimeline}>User Timeline</button>
-
-        <input onChange={(e)=>{setSearchInput(e.target.value)}} placeholder='search'></input>
-        <button className={styles.button} type='submit' onClick={handleSearch}>Search</button>
-    
-
-      <button className={styles.button} type='submit' onClick={goToUserSettings}>User Settings</button>
-
-      <button className={styles.button} type='submit' onClick={handleLogout}>Logout</button>
-      </div>
-
-
+      <Popper open={open} anchorEl={anchorEl} placement="bottom-start">
+        <ClickAwayListener onClickAway={handleClose}>
+          <Paper>
+          <List>
+            {searchResults.map((result: any, idx) => (
+              <Link href={`/visit/${result.user_id}`} key={idx}>
+                <ListItem button onClick={() => {
+                  handleClose();
+                }}>
+                  {result.avatar === "" ? <ScoreboardIcon /> : <Image width={1} height={1} src={result.avatar} alt="User Avatar" />}
+                  <ListItemText primary={result.username} />
+                  {result.following === true ? "following" : ""}
+                </ListItem>
+              </Link>
+            ))}
+            </List>
+          </Paper>
+        </ClickAwayListener>
+      </Popper>
     </div>
   );
 }
-
-export default Navbar;
-
-

@@ -84,4 +84,20 @@ router.delete("/delete", authenticateToken, async (req, res) => {
   }
 });
 
+
+router.get('/getVisitor', async (req, res) => {
+  console.log("fetching posts for visitor user...");
+  const lookup_user_id  = req.query.user_id;
+  console.log("fetching posts for user id", lookup_user_id);
+  try{
+    const posts = await Post.fetchPosts(lookup_user_id);
+    res.status(200).json(posts);
+  } catch (err){
+    console.log("error fetching posts: ", err);
+    res.status(500).json(err);
+  }
+
+});
+
+
 module.exports = router;

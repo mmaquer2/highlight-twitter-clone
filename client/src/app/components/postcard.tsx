@@ -14,9 +14,10 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
     content: string;
     avatar: string;
     time: string;
+    owner: string;
   };
   
-  const PostCard: React.FC<PostCardProps> = ({ id, content, avatar, time }) => {
+  const PostCard: React.FC<PostCardProps> = ({ id, owner, content, avatar, time }) => {
   
       // TODO: handlers for like, comment, and share buttons
   

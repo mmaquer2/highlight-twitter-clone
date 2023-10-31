@@ -35,7 +35,7 @@ export default function Home() {
 
   return (
     <main className={styles.main}>
-      <p className={styles.text}>Welcome to Highlights! A Twitter Clone.</p>
+      <p className={styles.text}>Welcome to Highlights!</p>
 
       <form>
         <input

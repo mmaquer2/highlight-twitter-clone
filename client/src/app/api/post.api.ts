@@ -43,6 +43,22 @@ export const deleteUserPost = async (post_id: string) => {
   }
 };
 
+export const fetchVistorPosts = async (user_id: string) => {
+  console.log("fetching visitor posts api route called");
+  try {    
+    const response = await api.get("/api/posts/getVisitor", {
+      params: {
+        user_id
+      }
+    });
+
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+//TODO: implement likePost and unlikePost
 
 export const likePost = async (post_id: string) => {
 
@@ -51,3 +67,8 @@ export const likePost = async (post_id: string) => {
 export const unlikePost = async (post_id: string) => {
   
 };
+
+//TODO: implement commentPost and uncommentPost
+
+
+//TODO: implement sharePost and unsharePost
