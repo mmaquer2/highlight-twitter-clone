@@ -3,8 +3,10 @@ import { useEffect, useState } from "react";
 import styles from "../styles/dashboard.module.css";
 import '../styles/global.css'
 import { fetchPosts, createPost } from "../app/api/post.api";
+import {getUserCache} from "../app/api/auth.api";
 import Navbar from "@/app/components/navbar";
 import PostCard from "@/app/components/postcard";
+import { get } from "axios";
 
 
 /*
@@ -19,6 +21,32 @@ export default function Dashboard() {
   const [newPostContent, setNewContent] = useState("");
   const [username, setUsername] = useState("");  // TODO:
   const [avatarLink, setAvatarLink] = useState(""); // TODO:
+
+
+  useEffect(() => {
+
+
+    const fetchData = async () => {
+      try {
+        const data = await getUserCache();
+        setUsername(data.username);
+        setAvatarLink(data.avatar_link);
+        //setFollowers(data.followers);
+        //setFollowing(data.following);
+
+        console.log("data from user cache", data);
+
+        
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+  
+    fetchData();
+    getPostData();
+  }, []);
+
+
 
   async function getPostData() {
     console.log("fetch posts button pressed!");
@@ -41,6 +69,7 @@ export default function Dashboard() {
     <main className={styles.main}>
      
       <p className={styles.text}>Welcome to your highlights.</p>
+      {username && <p>{username}</p>}
       <p>Followers: {followers.length}</p>
       <p>Following: {following.length}</p>
         <p>Posts: {posts.length}</p> 
@@ -52,9 +81,6 @@ export default function Dashboard() {
       ></input>
 
       <button className={styles.button} type="submit" onClick={createNewPost}>Post Highlight</button>
-
-      <button className={styles.button} type="submit" onClick={getPostData}>Test Fetch Posts</button>
-
     
       <div>
         {posts.map((post: any) => (

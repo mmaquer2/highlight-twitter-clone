@@ -21,6 +21,7 @@ const createUser = async (user) => {
   }
 };
 
+
 /**
  * looks up a user by their username
  * @param {string} username
@@ -61,13 +62,9 @@ const getAllFollowersByUser = async (user_id) => {
   const client = req.app.locals.redisClient;
 
   try {
-  } catch (err) {}
-};
+  } catch (err) {
 
-// this is the search hook on the timeline page to lookup new followers or friends
-
-const searchForUsername = () => {
-  //TODO:
+  }
 };
 
 /**
@@ -81,10 +78,15 @@ const createNewFollower = async (user_id, follower_id) => {
   //TODO:
 };
 
+//TODO:
+const unFollowUser = async (user_id, follower_id) => {
+  console.log("unfollowing user...");
+
+};
+
 module.exports = {
   createUser,
   findUserByUsername,
-  searchForUsername,
   createNewFollower,
   getAllFollowersByUser,
 };

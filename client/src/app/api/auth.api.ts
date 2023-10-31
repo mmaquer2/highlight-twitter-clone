@@ -85,3 +85,24 @@ export const register = async (
     console.log(error);
   }
 };
+
+
+export const getUserCache = async () => {
+
+  console.log("getting user cache...");
+  try {
+
+    const response = await api.get("/api/auth/get-user-cache", {
+      withCredentials: true,
+    });
+
+    if (response.status === 200) {
+      console.log("user cache retrieved");
+      return response.data;
+    }
+  } catch (error) {
+    console.log("user cache retrieval unsuccessful");
+    console.log(error);
+  }
+
+}
