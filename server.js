@@ -27,7 +27,7 @@ const client = redis.createClient({
     if (options.attempt > 10) {
       return undefined;
     }
-    return Math.min(options.attempt * 100, 3000); 
+    return Math.min(options.attempt * 100, 3000);
   },
 });
 
@@ -45,7 +45,6 @@ app.use(express.json());
 // TODO: for some reason cors only works in dev mode if I set origin to true,
 // does not function correctly when in the NODE_ENV dev mode
 app.use(cors({ credentials: true, origin: true }));
-
 
 app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);

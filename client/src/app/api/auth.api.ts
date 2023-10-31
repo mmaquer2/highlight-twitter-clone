@@ -32,7 +32,6 @@ export const loginUser = async (
   }
 };
 
-
 export const checkAuthStatus = async () => {
   try {
     const response = await api.get("/api/auth/check-auth", {
@@ -86,12 +85,9 @@ export const register = async (
   }
 };
 
-
 export const getUserCache = async () => {
-
   console.log("getting user cache...");
   try {
-
     const response = await api.get("/api/auth/get-user-cache", {
       withCredentials: true,
     });
@@ -104,5 +100,4 @@ export const getUserCache = async () => {
     console.log("user cache retrieval unsuccessful");
     console.log(error);
   }
-
-}
+};

@@ -80,7 +80,6 @@ WIP
 
 ### Deployment Instructions:
 
-
 - next js client and node app deployed on heroku
 - postgres database deployed on supabase
 
@@ -101,8 +100,9 @@ this app uses web sockets to send messages between users, and trigger database u
 https://socket.io/get-started/chat
 
 ### Redis Cloud Instructions:
+
 WIP
 
-
 ### Icons Setup:
+
 https://mui.com/material-ui/getting-started/installation/

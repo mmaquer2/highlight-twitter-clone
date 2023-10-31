@@ -55,18 +55,23 @@ router.post("/login", async (req, res) => {
       // Caching data in Redis post login
 
       Posts.fetchPosts(user.id);
-      
+
       const client = req.app.locals.redisClient;
-            
+
       const loggedInUserData = {
         user: user.id,
         username: user.username,
         avatar_url: user.avatar_url || "",
-      }
+      };
 
       console.log("caching logged in user data: ", loggedInUserData);
 
-      await client.set("loggedin_user", JSON.stringify(loggedInUserData), "EX", 1000);
+      await client.set(
+        "loggedin_user",
+        JSON.stringify(loggedInUserData),
+        "EX",
+        1000,
+      );
 
       //TODO:
       // User.fetchFollowing(user.id);
@@ -95,25 +100,17 @@ router.get("/check-auth", authenticateToken, (req, res) => {
   res.sendStatus(200);
 });
 
-
-router.get('/get-user-cache', authenticateToken, async (req, res) => {
+router.get("/get-user-cache", authenticateToken, async (req, res) => {
   const client = req.app.locals.redisClient;
 
   try {
-  
     console.log("getting logged in user cache...");
     const loggedInUserData = await client.get("loggedin_user");
     console.log("logged in user data: ", loggedInUserData);
     res.status(200).json(JSON.parse(loggedInUserData));
-   
-  
   } catch (err) {
-  
     console.log("error getting logged in user cache: ", err);
-  
   }
-
-})
-
+});
 
 module.exports = router;

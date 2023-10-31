@@ -45,11 +45,11 @@ export const deleteUserPost = async (post_id: string) => {
 
 export const fetchVistorPosts = async (user_id: string) => {
   console.log("fetching visitor posts api route called");
-  try {    
+  try {
     const response = await api.get("/api/posts/getVisitor", {
       params: {
-        user_id
-      }
+        user_id,
+      },
     });
 
     return response.data;
@@ -60,15 +60,10 @@ export const fetchVistorPosts = async (user_id: string) => {
 
 //TODO: implement likePost and unlikePost
 
-export const likePost = async (post_id: string) => {
+export const likePost = async (post_id: string) => {};
 
-};
-
-export const unlikePost = async (post_id: string) => {
-  
-};
+export const unlikePost = async (post_id: string) => {};
 
 //TODO: implement commentPost and uncommentPost
-
 
 //TODO: implement sharePost and unsharePost
