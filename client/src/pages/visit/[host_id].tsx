@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import '../../styles/global.css'
+import styles from "../../styles/dashboard.module.css";
 import Navbar from "@/app/components/navbar";
 import PostCard from "@/app/components/postcard";
 import { fetchVistorPosts } from "@/app/api/post.api";
 import { useRouter } from 'next/router';
+import LinearProgress from '@mui/material/LinearProgress';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
 export default function VisitorDashboard(){
 
@@ -13,7 +16,7 @@ export default function VisitorDashboard(){
     const [followers,setFollowers] = useState([]);
     const [following,setFollowing] = useState([]);
     const [hostIdString,setHostId] = useState(""); 
-    const [isFollowing,setIsFollowing] = useState(false); //TODO: need to fetch this from db
+    const [isFollowing,setIsFollowing] = useState(false); 
     const [username,setUsername] = useState("");
     const [avatarLink,setAvatarLink] = useState("");
 
@@ -22,8 +25,10 @@ export default function VisitorDashboard(){
             console.log(host_id);
             setHostId(host_id.toString());
 
+            //fetch host data here username and avatar link
+
             //TODO: need to fetch host data here for visitor dashboard
-            
+
         }
 
         //TODO: general error page that says user not found if host_id is not found in db
@@ -35,8 +40,7 @@ export default function VisitorDashboard(){
         console.log("getting data for host:",hostIdString);
         const data = await fetchVistorPosts(hostIdString);
         if (data) {
-          setPosts(data);
-          console.log(data);
+          setPosts(data.reverse());
         }
     }
 
@@ -48,6 +52,7 @@ export default function VisitorDashboard(){
             // create connection between visitor and host in db
 
         } else {
+
 
         }
 
@@ -72,7 +77,48 @@ export default function VisitorDashboard(){
     </div>
 
     </>)
-
-
-
 }
+
+
+
+const LoadingComponent = () => <LinearProgress />;
+
+type VisitorDashboardContentProps = {
+
+    state: any;
+    setData: Function;
+    createNewPost: Function;
+};
+
+
+const VisitorDashboardContent: React.FC<VisitorDashboardContentProps>  = ({ state, setData , createNewPost }) => (
+
+<div>   
+    <Navbar />
+    <main className={styles.main}>
+        <p className={styles.text}>Welcome to your highlights.</p>
+        {state.username && <p>{state.username}</p>}
+        {state.avatarLink !== "" ? <AccountBoxIcon sx={{ fontSize: 100 }} /> : <Image src={state.avatarLink} alt="avatar" />}
+        <p>Followers: {state.followers.length}</p>
+        <p>Following: {state.following.length}</p>
+        <p>Posts: {state.posts.length}</p>
+        <input
+            className={styles.input}
+            onChange={(e) => setData((prevData: any) => ({ ...prevData, newPostContent: e.target.value }))}
+            placeholder="Whats going on today?"
+        />
+        <button className={styles.button} type="submit" onClick={createNewPost}>
+            Post Highlight
+        </button>
+        <div>
+            {state.posts.map((post:any) => (
+                <PostCard key={post.id} owner={post.user_id} id={post.id} content={post.content} time={post.posted_at} avatar="" />
+            ))}
+        </div>
+    </main>
+</div>
+
+
+
+);
+

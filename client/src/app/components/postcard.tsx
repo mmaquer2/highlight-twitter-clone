@@ -6,8 +6,6 @@ import CommentIcon from '@mui/icons-material/Comment';
 import ShareIcon from '@mui/icons-material/Share';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-
-//TODO: add date created to postcard, likes, comments, etc.
   
   type PostCardProps = {
     id: string;

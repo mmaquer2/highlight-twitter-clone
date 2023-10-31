@@ -83,15 +83,11 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.post("/logout", (req, res) => {
-  
-  
+router.post("/logout", async (req, res) => {
   console.log("logout route called");
   res.clearCookie("token");
-
-
-  //TODO: clear user cache
-
+  const client = req.app.locals.redisClient;
+  await client.del("loggedin_user"); // clear logged in user cache
   res.json({ message: "User logged out" });
 });
 
@@ -108,7 +104,6 @@ router.get('/get-user-cache', authenticateToken, async (req, res) => {
     console.log("getting logged in user cache...");
     const loggedInUserData = await client.get("loggedin_user");
     console.log("logged in user data: ", loggedInUserData);
-
     res.status(200).json(JSON.parse(loggedInUserData));
    
   
