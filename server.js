@@ -1,13 +1,20 @@
 const express = require("express");
-const app = express();
 const cors = require("cors");
 const authRoutes = require("./server/routes/authRoute");
 const postRoutes = require("./server/routes/postRoute");
 const timelineRoutes = require("./server/routes/timelineRoute");
 const searchRoutes = require("./server/routes/searchRoute");
+const followRoutes = require("./server/routes/followRoute");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 const redis = require("redis");
+const socket = require("./server/socket");
+
+const http = require("http");
+
+const app = express();
+const server = http.createServer(app);
+socket.init(server);
 
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
@@ -49,6 +56,7 @@ app.use(cors({ credentials: true, origin: true }));
 app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/timeline", timelineRoutes);
+app.use("/api/follow", followRoutes);
 app.use("/api/search", searchRoutes);
 
 if (process.env.NODE_ENV === "dev") {
@@ -64,7 +72,7 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-app.listen(PORT, () =>
+server.listen(PORT, () =>
   console.log(`server started successfully on port ${PORT}`),
 );
 

@@ -62,6 +62,14 @@ export const logout = async () => {
   }
 };
 
+/**
+ * Creates a new user account in the users database table
+ * @param username
+ * @param email
+ * @param password
+ * @returns status code of 201 if successful
+ */
+
 export const register = async (
   username: string,
   email: string,
@@ -85,6 +93,11 @@ export const register = async (
   }
 };
 
+/**
+ * returns the logged in user cache of username, user.id, email, and avatar profile picture
+ * @returns object{}
+ */
+
 export const getUserCache = async () => {
   console.log("getting user cache...");
   try {
@@ -98,6 +111,26 @@ export const getUserCache = async () => {
     }
   } catch (error) {
     console.log("user cache retrieval unsuccessful");
+    console.log(error);
+  }
+};
+
+/**
+ * gets the host data for when visting a host id page
+ * @returns object{}
+ */
+export const getProfileOwnerData = async (owner_id: string) => {
+  console.log("getting profile owner data...");
+  try {
+    const response = await api.get("/api/auth/get-profile-owner-data", {
+      params: { owner_id },
+    });
+    if (response.status === 200) {
+      console.log("profile owner data retrieved");
+      return response.data;
+    }
+  } catch (error) {
+    console.log("profile owner data retrieval unsuccessful");
     console.log(error);
   }
 };

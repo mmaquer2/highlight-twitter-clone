@@ -50,6 +50,11 @@ export default function Navbar() {
     router.push("/dashboard");
   }
 
+  async function handleNav(user_id: string) {
+    console.log("handle nav button pressed!");
+    router.push(`/visit/${user_id}`);
+  }
+
   return (
     <div className={styles.navbar}>
       <ScoreboardIcon className={styles.icon} onClick={gotoDashboard} />
@@ -69,27 +74,26 @@ export default function Navbar() {
           <Paper>
             <List>
               {searchResults.map((result: any, idx) => (
-                <Link href={`/visit/${result.user_id}`} key={idx}>
-                  <ListItem
-                    button
-                    onClick={() => {
-                      handleClose();
-                    }}
-                  >
-                    {result.avatar === "" ? (
-                      <ScoreboardIcon />
-                    ) : (
-                      <Image
-                        width={1}
-                        height={1}
-                        src={result.avatar}
-                        alt="User Avatar"
-                      />
-                    )}
-                    <ListItemText primary={result.username} />
-                    {result.following === true ? "following" : ""}
-                  </ListItem>
-                </Link>
+                <ListItem
+                  key={idx}
+                  onClick={() => {
+                    handleNav(result.user_id);
+                    handleClose();
+                  }}
+                >
+                  {result.avatar === "" ? (
+                    <ScoreboardIcon />
+                  ) : (
+                    <Image
+                      width={1}
+                      height={1}
+                      src={result.avatar}
+                      alt="User Avatar"
+                    />
+                  )}
+                  <ListItemText primary={result.username} />
+                  {result.following === true ? "following" : ""}
+                </ListItem>
               ))}
             </List>
           </Paper>

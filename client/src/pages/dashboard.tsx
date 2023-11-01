@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import styles from "../styles/dashboard.module.css";
 import { fetchPosts, createPost } from "../app/api/post.api";
 import { getUserCache } from "../app/api/auth.api";
+import { io } from "socket.io-client";
 import Navbar from "@/app/components/navbar";
 import PostCard from "@/app/components/postcard";
 import LinearProgress from "@mui/material/LinearProgress";
@@ -11,15 +12,20 @@ import Image from "next/image";
 export default function Dashboard() {
   const [data, setData] = useState({
     posts: [],
-    followers: [],
-    following: [],
+    followers: 0,
+    following: 0,
     newPostContent: "",
     username: "",
     avatarLink: "",
   });
   const [loading, setLoading] = useState(true);
+  const [socket, setSocket] = useState(null);
 
   useEffect(() => {
+    const socket = io("http://localhost:3001");
+    socket.emit("join", data.username);
+    setSocket(socket);
+
     fetchData();
     getPostData();
   }, []);
@@ -32,6 +38,8 @@ export default function Dashboard() {
         ...prevData,
         username: userData.username,
         avatarLink: userData.avatar_link,
+        followers: userData.follow_summary.followers,
+        following: userData.follow_summary.following,
       }));
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -86,8 +94,8 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
       ) : (
         <Image src={state.avatarLink} alt="avatar" />
       )}
-      <p>Followers: {state.followers.length}</p>
-      <p>Following: {state.following.length}</p>
+      <p>Followers: {state.followers}</p>
+      <p>Following: {state.following}</p>
       <p>Posts: {state.posts.length}</p>
       <input
         className={styles.input}

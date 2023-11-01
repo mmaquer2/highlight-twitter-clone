@@ -1,4 +1,4 @@
-### Highlights -- a twitter clone
+### Highlights
 
 A twitter clone built with Next.js, Node.js, Express, and PostgreSQL.
 
@@ -69,14 +69,14 @@ redis-cli # to start the redis cli
 
    - used for storing user profile images and other media
 
-9. start-up
-   run the app in the root of the project run `node server.js`and in the client directory run `npm run dev`
+9. Local Project Start-up:
 
-- the app will be running on localhost:3000, and server on localhost:3001
+   - run the app in the root of the project run `node server.js`and in the client directory run `npm run dev`
+   - the app will be running on localhost:3000, and server on localhost:3001
 
 ### Testing:
 
-WIP
+- WIP
 
 ### Deployment Instructions:
 
@@ -101,8 +101,12 @@ https://socket.io/get-started/chat
 
 ### Redis Cloud Instructions:
 
-WIP
+- WIP
 
 ### Icons Setup:
 
 https://mui.com/material-ui/getting-started/installation/
+
+### Project Style Guide:
+
+- WIP

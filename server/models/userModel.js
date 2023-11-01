@@ -45,44 +45,30 @@ const findUserByUsername = async (username) => {
 };
 
 /**
- * =========== Follower User Routes and Operations ==============
- * Below are the routes for the followers table and operations
- *
- *
+ * looks up a user by their username
+ * @param {string} username
+ * @returns user object || null
  */
 
-/**
- *
- * @param {number} user_id
- */
-
-//TODO:
-const getAllFollowersByUser = async (user_id) => {
-  const client = req.app.locals.redisClient;
-
+const findUserByUserID = async (user_id) => {
   try {
-  } catch (err) {}
-};
+    const user = await pool.query("SELECT * FROM users WHERE id = $1", [
+      user_id,
+    ]);
 
-/**
- * creates a connetion between the loggined in user and teh user they are following
- * @param {string} user_id
- * @param {string} follower_id
- */
-const createNewFollower = async (user_id, follower_id) => {
-  console.log("creating new follower...");
+    if (user.rows.length === 0) {
+      console.log("could not find user");
+      return null;
+    }
 
-  //TODO:
-};
-
-//TODO:
-const unFollowUser = async (user_id, follower_id) => {
-  console.log("unfollowing user...");
+    return user.rows[0];
+  } catch (err) {
+    console.error(err.message);
+  }
 };
 
 module.exports = {
   createUser,
   findUserByUsername,
-  createNewFollower,
-  getAllFollowersByUser,
+  findUserByUserID,
 };
