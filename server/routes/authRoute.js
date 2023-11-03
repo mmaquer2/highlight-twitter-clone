@@ -61,8 +61,6 @@ router.post("/login", async (req, res) => {
       // TODO: prepare timelien data for caching
       // const timelineData = await Posts.fetchTimelinePosts(user.id);
 
-      console.log("follower data post login:", followData);
-
       const followSummary = {
         followers: 0,
         following: 0,
@@ -82,7 +80,7 @@ router.post("/login", async (req, res) => {
       const client = req.app.locals.redisClient;
 
       const loggedInUserData = {
-        user: user.id,
+        user_id: user.id,
         username: user.username,
         avatar_url: user.avatar_url || "",
         follow_summary: followSummary,

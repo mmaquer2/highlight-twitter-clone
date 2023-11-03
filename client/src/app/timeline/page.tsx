@@ -1,10 +1,3 @@
-"use client";
-
-/*
- *  the Timeline of an individual user
- *
- */
-
 export default function Timeline() {
   return (
     <>

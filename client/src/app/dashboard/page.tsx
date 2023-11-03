@@ -1,13 +1,15 @@
+"use client";
 import { useEffect, useState } from "react";
-import styles from "../styles/dashboard.module.css";
-import { fetchPosts, createPost } from "../app/api/post.api";
-import { getUserCache } from "../app/api/auth.api";
-import { io } from "socket.io-client";
+import styles from "../../styles/dashboard.module.css";
+import { fetchPosts, createPost } from "../api/post.api";
+import { getUserCache } from "../api/auth.api";
 import Navbar from "@/app/components/navbar";
+import Footer from "@/app/components/footer";
 import PostCard from "@/app/components/postcard";
 import LinearProgress from "@mui/material/LinearProgress";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import Image from "next/image";
+import { useSocket } from "@/app/context/store";
 
 export default function Dashboard() {
   const [data, setData] = useState({
@@ -17,18 +19,54 @@ export default function Dashboard() {
     newPostContent: "",
     username: "",
     avatarLink: "",
+    user_id: "",
   });
+
   const [loading, setLoading] = useState(true);
-  const [socket, setSocket] = useState(null);
+  const { socket } = useSocket(); // get socket from context provider
 
   useEffect(() => {
-    const socket = io("http://localhost:3001");
-    socket.emit("join", data.username);
-    setSocket(socket);
-
-    fetchData();
-    getPostData();
+    fetchData()
+      .then(() => getPostData().catch(console.error))
+      .catch(console.error);
   }, []);
+  
+
+  useEffect(() => {
+    if (socket && data.user_id) {
+      console.log("socket exists and user_id is available", data.user_id);
+      
+      //socket.emit("user_notif_join", data.user_id);
+      //console.log("joined notif room!");
+  
+      socket.on("notify_new_follower", (notificationData) => {
+        console.log("new follower notification received!", notificationData.message);
+      });
+  
+      socket.on("message", (message) => {
+        console.log("message received!", message);
+      });
+
+      socket.on("newPost", (data) => {  
+        console.log("new post notification received!", data);
+    });
+  
+      return () => {
+        socket.off("notify_new_follower");
+        socket.off("message");
+        socket.off("newPost");
+        //socket.off("notify_new_follower");
+    };
+    } else {
+        console.log("socket does not exist or user_id is not available", data.user_id);
+    }
+  }, [socket, data.user_id]);
+
+  const testSocket = () => {
+    if (socket) {
+      socket.emit("message", "hello world!");
+    }
+  };
 
   const fetchData = async () => {
     try {
@@ -40,6 +78,7 @@ export default function Dashboard() {
         avatarLink: userData.avatar_link,
         followers: userData.follow_summary.followers,
         following: userData.follow_summary.following,
+        user_id: userData.user_id,
       }));
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -58,6 +97,7 @@ export default function Dashboard() {
   const createNewPost = async () => {
     await createPost(data.newPostContent);
     await getPostData();
+    setData((prevData) => ({ ...prevData, newPostContent: "" }));
   };
 
   return loading ? (
@@ -67,6 +107,7 @@ export default function Dashboard() {
       state={data}
       setData={setData}
       createNewPost={createNewPost}
+      testSocket={testSocket}
     />
   );
 }
@@ -77,12 +118,14 @@ type DashboardContentProps = {
   state: any;
   setData: Function;
   createNewPost: Function;
+  testSocket: Function;
 };
 
 const DashboardContent: React.FC<DashboardContentProps> = ({
   state,
   setData,
   createNewPost,
+  testSocket,
 }) => (
   <div>
     <Navbar />
@@ -110,6 +153,9 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
       <button className={styles.button} type="submit" onClick={createNewPost}>
         Post Highlight
       </button>
+      <button className={styles.button} type="submit" onClick={testSocket}>
+        Test Socket
+      </button>
       <div>
         {state.posts.map((post: any) => (
           <PostCard
@@ -123,5 +169,6 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
         ))}
       </div>
     </main>
+    <Footer />
   </div>
 );

@@ -1,17 +1,15 @@
+"use client";
 import { useEffect, useState } from "react";
-import "../../styles/global.css";
-import styles from "../../styles/dashboard.module.css";
-import Navbar from "@/app/components/navbar";
-import PostCard from "@/app/components/postcard";
+import Navbar from "../../components/navbar";
+import PostCard from "../../components/postcard";
 import { getProfileOwnerData } from "@/app/api/auth.api";
 import { createNewFollowing, deleteFollowing } from "@/app/api/follow.api";
 import { useRouter } from "next/router";
 import { fetchVistorPosts } from "@/app/api/post.api";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 
-export default function VisitorDashboard() {
-  const router = useRouter();
-  const { host_id } = router.query;
+export default function VisitorDashboard({ params }) {
+  const host_id = params.host_id;
 
   const [state, setState] = useState({
     posts: [],

@@ -1,9 +1,10 @@
 const router = require("express").Router();
 const Follow = require("../models/followModel.js");
+const socket = require("../socket");
 const authenticateToken = require("../middleware/authenticateToken");
 
 /**
- *
+ * Rotues for the follow data model
  *
  */
 
@@ -23,6 +24,11 @@ router.post("/create", authenticateToken, async (req, res) => {
     );
     const client = req.app.locals.redisClient;
     await client.del(`user_follows_${req.user.id}`); // invalidate cache after creating new follow relationship
+
+      const io = socket.getIO();
+      io.emit("test", {message: "test message from follow model"})
+      
+
     res.status(200);
   } catch (err) {
     console.log("error creating new follower: ", err);
