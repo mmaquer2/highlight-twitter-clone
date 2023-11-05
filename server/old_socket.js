@@ -28,7 +28,6 @@ exports.init = (server) => {
         .emit("notify_new_follower", { message: "You have a new follower!" });
     });
 
-
     socket.on("new_post", (data) => {
       console.log("on socket: new post data: ", data);
       const { userId } = data;
@@ -59,6 +58,6 @@ exports.getIO = () => {
   if (!io) {
     throw new Error("Socket.io not initialized!");
   }
-  console.log("socket io is initialized!, returning instance...")
+  console.log("socket io is initialized!, returning instance...");
   return io;
 };

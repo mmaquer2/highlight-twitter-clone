@@ -3,7 +3,11 @@ import { useEffect, useState } from "react";
 import Navbar from "../../components/navbar";
 import PostCard from "../../components/postcard";
 import { getProfileOwnerData } from "@/app/api/auth.api";
-import { createNewFollowing, deleteFollowing } from "@/app/api/follow.api";
+import {
+  createNewFollowing,
+  deleteFollowing,
+  checkProfileOwnerFollowing,
+} from "@/app/api/follow.api";
 import { useRouter } from "next/router";
 import { fetchVistorPosts } from "@/app/api/post.api";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
@@ -34,7 +38,17 @@ export default function VisitorDashboard({ params }) {
 
   const fetchData = async () => {
     await getHostData();
+    // TODO: check if user is following profile owner
+    //await checkFollowing(); 
     await getPostData();
+  };
+
+  const checkFollowing = async () => {
+    const isFollowStatus = await checkProfileOwnerFollowing(host_id);
+    setState((prevState) => ({
+      ...prevState,
+      isFollowing: isFollowStatus,
+    }));
   };
 
   const getHostData = async () => {

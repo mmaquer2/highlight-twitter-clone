@@ -18,6 +18,22 @@ const getAllFollowersByUser = async (user_id) => {
   }
 };
 
+
+const checkFollowingForGuestanduser = async (host_id,user_id) => {
+
+
+  try {
+    const followers = await pool.query(
+      "SELECT * FROM followers WHERE followee_id = $1 AND follower_id = $2",
+      [host_id,user_id],
+    );
+    return followers.rows;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+
 /**
  * Creates a connetion between the loggined in user and the user they are following
  * @param {string} user_id
@@ -41,10 +57,9 @@ const addFollowRelationship = async (user_id, follower_id) => {
     // } else {
     //   console.log("socket.io not initialized");
     // }
-      console.log("io here:")
-      console.log(io)
-    io.emit("test", {message: "test message"});
-
+    console.log("io here:");
+    console.log(io);
+    io.emit("test", { message: "test message" });
 
     return newFollow.rows[0];
   } catch (err) {
@@ -66,4 +81,5 @@ module.exports = {
   getAllFollowersByUser,
   addFollowRelationship,
   deleteFollowRelationship,
+  checkFollowingForGuestanduser
 };

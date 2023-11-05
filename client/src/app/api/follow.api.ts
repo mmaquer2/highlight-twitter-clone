@@ -50,3 +50,27 @@ export const getFollowers = async (user_id: string) => {
     console.log(err);
   }
 };
+
+/**
+ *
+ * @param host_id // id of the person whose profile is being viewed
+ */
+
+export const checkProfileOwnerFollowing = async (
+  host_id: string,
+): Promise<boolean> => {
+  try {
+    console.log("check following api route called");
+    const response = await api.get("/api/follow/check", {
+      params: {
+        host_id: host_id,
+      },
+    });
+
+    return response.data;
+  } catch (err) {
+    console.log(err);
+    console.log("error in check following api route");
+    return false;
+  }
+};

@@ -32,9 +32,6 @@ const createPost = async (user_id, content) => {
       [user_id, content],
     );
 
-  
-
-
     console.log(result.rows);
     return result.rows;
   } catch (err) {

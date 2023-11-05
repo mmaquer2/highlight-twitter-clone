@@ -25,9 +25,8 @@ router.post("/create", authenticateToken, async (req, res) => {
     const client = req.app.locals.redisClient;
     await client.del(`user_follows_${req.user.id}`); // invalidate cache after creating new follow relationship
 
-      const io = socket.getIO();
-      io.emit("test", {message: "test message from follow model"})
-      
+    const io = socket.getIO();
+    io.emit("test", { message: "test message from follow model" });
 
     res.status(200);
   } catch (err) {
@@ -52,6 +51,25 @@ router.get("/get", authenticateToken, async (req, res) => {
     console.log("error getting followers: ", err);
   }
 });
+
+router.get("/check", authenticateToken, async (req, res) => {
+  try {
+    
+    console.log("get follower route called...");
+  
+    const look_upprofile_onwer = req.query.host_id;
+    const look_upprofile_visitor = req.user.id;
+    const isFollowing = await Follow.getAllFollowersByUser(req.params.user_id);
+  
+       
+
+
+  } catch (err) {
+    console.log("error getting followers: ", err);
+  }
+});
+
+
 
 router.post("/delete", authenticateToken, async (req, res) => {
   try {

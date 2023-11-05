@@ -10,8 +10,7 @@ const path = require("path");
 const redis = require("redis");
 
 const socketio = require("socket.io");
-const http = require("http"); 
-
+const http = require("http");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -19,52 +18,47 @@ console.log("starting server on port " + PORT);
 
 const server = http.createServer(app);
 const { Server } = require("socket.io");
-const io = new Server(server , {cors:{
-  origin: "http://localhost:3000",
-  methods: ["GET", "POST"],
-  allowedHeaders: ["my-custom-header"],
-  credentials: true,
-}});
-
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+    allowedHeaders: ["my-custom-header"],
+    credentials: true,
+  },
+});
 
 app.set("io", io); // Make socket.io accessible to our express application
 
+io.on("connection", function (socket) {
+  console.log("New Socket Connection on" + PORT);
 
-io.on('connection', function (socket) {
-    console.log("New Socket Connection on" + PORT);
+  socket.on("disconnect", function () {
+    console.log("Socket disconnected");
+  });
 
-    socket.on('disconnect', function () {
-        console.log("Socket disconnected");
-    });
+  socket.on("message", function (data) {
+    console.log("message received: ", data);
+  });
 
-    socket.on('message', function (data) {
-        console.log("message received: ", data);
-    });
+  socket.on("newPost", function (data) {
+    console.log("new post received: ", data);
+  });
 
-    socket.on('newPost', function (data) {
-        console.log("new post received: ", data);
-
-    });
-
-    socket.on('newFollow', function (data) {
-        console.log("new follow received: ", data);
-    });
-
+  socket.on("newFollow", function (data) {
+    console.log("new follow received: ", data);
+  });
 });
+
+// for testing purposes only emit message to clients
 
 // setInterval(() => {
 //   io.emit('message', { message: 'Hello from server interval' });
 // }, 5000);
 
-
-
-
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
   console.log("dev mode... using dotenv config...");
 }
-
-
 
 const client = redis.createClient({
   port: 6379,
@@ -114,11 +108,9 @@ if (process.env.NODE_ENV === "production") {
 }
 
 server.listen(PORT, () => {
-  console.log(`server started successfully on port ${PORT}`)
+  console.log(`server started successfully on port ${PORT}`);
   //socket.setServer(appConn)
- // socket.createConnection()
+  // socket.createConnection()
 });
-
-
 
 module.exports = app;

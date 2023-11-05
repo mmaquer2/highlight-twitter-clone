@@ -61,16 +61,17 @@ router.post("/create", authenticateToken, async (req, res) => {
     const newPost = await Post.createPost(user_id, content);
     await client.del(`user_posts_${user_id}`); // Invalidate the cache for this user's posts
 
+    const io = req.app.get("io");
 
-    const io = req.app.get('io');
-    
-    
-    io.emit("newPost", { data: `GREAT DAY FOR A NEW POST! with data : ${content}` }, (ack) => {
-      if(ack.error){
-        console.log("Error sending message:", ack.error);
-      }
-    });
-    
+    io.emit(
+      "newPost",
+      { data: `GREAT DAY FOR A NEW POST! with data : ${content}` },
+      (ack) => {
+        if (ack.error) {
+          console.log("Error sending message:", ack.error);
+        }
+      },
+    );
 
     res.status(201).json(newPost);
   } catch (err) {
