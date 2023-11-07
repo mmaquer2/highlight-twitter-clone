@@ -10,10 +10,10 @@ const api = axios.create({
   withCredentials: true,
 });
 
-export const generateTimeline = async () => {
+export const getUserTimeline = async () => {
   console.log("generate timeline api route called");
   try {
-    const response = await api.get("/api/timeline/generate");
+    const response = await api.get("/api/timeline/get");
     return response.data;
   } catch (err) {
     console.log(err);

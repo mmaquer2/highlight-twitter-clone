@@ -2,9 +2,9 @@ const router = require("express").Router();
 const User = require("../models/userModel");
 const Posts = require("../models/postModel");
 const Follows = require("../models/followModel");
+const Timeline = require("../models/timelineModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const socket = require("../socket");
 const authenticateToken = require("../middleware/authenticateToken");
 
 router.post("/register", async (req, res) => {
@@ -47,20 +47,33 @@ router.post("/login", async (req, res) => {
       return res.status(400).send("User not found");
     }
 
+    // validate password
     if (await bcrypt.compare(password, user.password)) {
+      // create jwt token for user session
       const token = jwt.sign({ id: user.id }, "your_jwt_secret", {
         expiresIn: "1h",
       });
 
-      res.cookie("token", token, { sameSite: "none", secure: true });
+      res.cookie("token", token, { sameSite: "none", secure: true }); // set cookie
 
-      // Caching data in Redis post login
-      Posts.fetchPosts(user.id);
-      const followData = await Follows.getAllFollowersByUser(user.id);
+      const client = req.app.locals.redisClient; // Caching data in Redis post login
 
-      // TODO: prepare timelien data for caching
-      // const timelineData = await Posts.fetchTimelinePosts(user.id);
+      Posts.fetchPosts(user.id); // fetch posts for user
 
+      const followData = await Follows.getAllFollowersByUser(user.id); // fetch follow data for user
+
+      // fetch user timeline data
+      const timelineData = await Timeline.createUserTimeline(user.id); // fetch timeline data for user
+
+      // set user timeline data in cache
+      await client.set(
+        `user_${user.id}_timeline`,
+        JSON.stringify(timelineData),
+        "EX",
+        1000,
+      );
+
+      // process follow data for user
       const followSummary = {
         followers: 0,
         following: 0,
@@ -77,8 +90,6 @@ router.post("/login", async (req, res) => {
         });
       }
 
-      const client = req.app.locals.redisClient;
-
       const loggedInUserData = {
         user_id: user.id,
         username: user.username,
@@ -86,6 +97,7 @@ router.post("/login", async (req, res) => {
         follow_summary: followSummary,
       };
 
+      // set logged in user data in cache
       await client.set(
         `loggedin_user_${user.id}`,
         JSON.stringify(loggedInUserData),

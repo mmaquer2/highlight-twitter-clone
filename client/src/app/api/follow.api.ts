@@ -12,7 +12,7 @@ const api = axios.create({
 
 /**
  * creates a new follower relationship
- * @param follow_id // id of the person to be followed
+ * @param follow_id // id of the user profile to be followed
  * @returns
  */
 
@@ -28,17 +28,32 @@ export const createNewFollowing = async (follow_id: string) => {
   }
 };
 
+/**
+ * deletes a follower relationship
+ * @param follow_id // id of the user profile to be unfollowed
+ * @returns
+ */
+
 export const deleteFollowing = async (follow_id: string) => {
   console.log("delete following api route called");
   try {
     console.log("sending unfollow for ", follow_id);
-    //const response = await api.delete("/api/follow/delete", { follow_id });
-
-    // return response.data;
+    const response = await api.delete("/api/follow/delete", {
+      params: {
+        follow_id: follow_id,
+      },
+    });
+    return response.data;
   } catch (err) {
     console.log(err);
   }
 };
+
+/**
+ * gets the list of people the user is following
+ * @param user_id // id of the user
+ * @returns
+ */
 
 export const getFollowers = async (user_id: string) => {
   console.log("get followers api route called");
@@ -52,8 +67,8 @@ export const getFollowers = async (user_id: string) => {
 };
 
 /**
- *
- * @param host_id // id of the person whose profile is being viewed
+ * checks if the profile owner is being followed by the current user
+ * @param host_id id of the person whose profile is being viewed
  */
 
 export const checkProfileOwnerFollowing = async (

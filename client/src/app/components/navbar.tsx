@@ -10,7 +10,6 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function Navbar() {
@@ -27,7 +26,7 @@ export default function Navbar() {
     const data = await generalSearch(searchInput);
     console.log("data from search api call");
     console.log(data);
-    setSearchResults(data); // Assuming data is an array of results.
+    setSearchResults(data);
     if (data && data.length > 0) {
       setOpen(true);
     }
@@ -43,6 +42,7 @@ export default function Navbar() {
 
   async function goToUserTimeline() {
     console.log("go to user timeline button pressed!");
+    router.push("/timeline");
   }
 
   async function gotoDashboard() {
@@ -58,6 +58,13 @@ export default function Navbar() {
   return (
     <div className={styles.navbar}>
       <ScoreboardIcon className={styles.icon} onClick={gotoDashboard} />
+      <button
+        className={styles.button}
+        type="submit"
+        onClick={goToUserTimeline}
+      >
+        Timeline
+      </button>
       <input
         onChange={(e) => {
           setSearchInput(e.target.value);
@@ -67,6 +74,14 @@ export default function Navbar() {
       />
       <button className={styles.button} type="submit" onClick={handleSearch}>
         Search
+      </button>
+
+      <button
+        className={styles.button}
+        type="submit"
+        onClick={goToUserSettings}
+      >
+        Settings
       </button>
 
       <Popper open={open} anchorEl={anchorEl} placement="bottom-start">

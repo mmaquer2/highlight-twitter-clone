@@ -120,7 +120,7 @@ export default function Dashboard() {
             Post Highlight
           </button>
           <div>
-            {data.posts.map((post) => (
+            {data.posts.map((post: any) => (
               <PostCard
                 key={post.id}
                 owner={post.user_id}

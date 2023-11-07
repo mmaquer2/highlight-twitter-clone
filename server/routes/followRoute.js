@@ -1,6 +1,5 @@
 const router = require("express").Router();
 const Follow = require("../models/followModel.js");
-const socket = require("../socket");
 const authenticateToken = require("../middleware/authenticateToken");
 
 /**
@@ -18,15 +17,14 @@ router.post("/create", authenticateToken, async (req, res) => {
       req.body.follow_id,
     );
 
+    //TODO: check if user is already following the user they are trying to follow
+
     const follows = await Follow.addFollowRelationship(
       req.user.id,
       req.body.follow_id,
     );
     const client = req.app.locals.redisClient;
     await client.del(`user_follows_${req.user.id}`); // invalidate cache after creating new follow relationship
-
-    const io = socket.getIO();
-    io.emit("test", { message: "test message from follow model" });
 
     res.status(200);
   } catch (err) {
@@ -54,27 +52,40 @@ router.get("/get", authenticateToken, async (req, res) => {
 
 router.get("/check", authenticateToken, async (req, res) => {
   try {
-    
     console.log("get follower route called...");
-  
+
     const look_upprofile_onwer = req.query.host_id;
     const look_upprofile_visitor = req.user.id;
-    const isFollowing = await Follow.getAllFollowersByUser(req.params.user_id);
-  
-       
-
-
+    const isFollowing = await Follow.checkFollowingForGuestandUser(
+      look_upprofile_onwer,
+      look_upprofile_visitor,
+    );
+    return res.status(200).json(isFollowing);
   } catch (err) {
     console.log("error getting followers: ", err);
   }
 });
 
-
-
-router.post("/delete", authenticateToken, async (req, res) => {
+router.delete("/delete", authenticateToken, async (req, res) => {
   try {
     console.log("delete follower route called...");
-  } catch (err) {}
+    console.log(
+      "deleting follower for user: ",
+      req.user.id,
+      " and follower: ",
+      req.query.follow_id,
+    );
+    const deletedFollow = await Follow.deleteFollowRelationship(
+      req.user.id,
+      req.query.follow_id,
+    );
+
+    console.log("deleted follower: ", deletedFollow);
+
+    return res.status(200).json(deletedFollow);
+  } catch (err) {
+    console.log("error deleting follower: ", err);
+  }
 });
 
 module.exports = router;

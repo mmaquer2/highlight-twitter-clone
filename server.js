@@ -27,7 +27,7 @@ const io = new Server(server, {
   },
 });
 
-app.set("io", io); // Make socket.io accessible to our express application
+app.set("io", io); // set socket.io instance on app
 
 io.on("connection", function (socket) {
   console.log("New Socket Connection on" + PORT);

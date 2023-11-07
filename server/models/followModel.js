@@ -18,21 +18,24 @@ const getAllFollowersByUser = async (user_id) => {
   }
 };
 
-
-const checkFollowingForGuestanduser = async (host_id,user_id) => {
-
-
+const checkFollowingForGuestandUser = async (host_id, user_id) => {
   try {
     const followers = await pool.query(
       "SELECT * FROM followers WHERE followee_id = $1 AND follower_id = $2",
-      [host_id,user_id],
+      [host_id, user_id],
     );
-    return followers.rows;
+
+    if (followers.rows.length === 0) {
+      console.log("the current user is not following the host user");
+      return false;
+    } else {
+      console.log("the current user is following the host user");
+      return true;
+    }
   } catch (err) {
     console.log(err);
   }
 };
-
 
 /**
  * Creates a connetion between the loggined in user and the user they are following
@@ -49,17 +52,7 @@ const addFollowRelationship = async (user_id, follower_id) => {
 
     console.log("new follower created: ", newFollow.rows[0]);
 
-    // emit socket event to all users that the user has a new follower
-    const io = socket.getIO();
-    // console.log("checking io", io);
-    // if (io) {
-    //   io.emit("new_follow", newFollow.rows[0]);
-    // } else {
-    //   console.log("socket.io not initialized");
-    // }
-    console.log("io here:");
-    console.log(io);
-    io.emit("test", { message: "test message" });
+    //TODO: send socket event to all users that the user has a new follower
 
     return newFollow.rows[0];
   } catch (err) {
@@ -75,11 +68,24 @@ const addFollowRelationship = async (user_id, follower_id) => {
 
 const deleteFollowRelationship = async (user_id, follower_id) => {
   console.log("unfollowing user...");
+
+  try {
+    const deletedFollow = await pool.query(
+      "DELETE FROM followers WHERE follower_id = $1 AND followee_id = $2 RETURNING *",
+      [user_id, follower_id],
+    );
+
+    console.log("deleted follower: ", deletedFollow.rows[0]);
+
+    return deletedFollow.rows[0];
+  } catch (error) {
+    console.log("error unfollowing user: ", error);
+  }
 };
 
 module.exports = {
   getAllFollowersByUser,
   addFollowRelationship,
   deleteFollowRelationship,
-  checkFollowingForGuestanduser
+  checkFollowingForGuestandUser,
 };

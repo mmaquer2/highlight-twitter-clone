@@ -8,7 +8,6 @@ import {
   deleteFollowing,
   checkProfileOwnerFollowing,
 } from "@/app/api/follow.api";
-import { useRouter } from "next/router";
 import { fetchVistorPosts } from "@/app/api/post.api";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 
@@ -38,8 +37,7 @@ export default function VisitorDashboard({ params }) {
 
   const fetchData = async () => {
     await getHostData();
-    // TODO: check if user is following profile owner
-    //await checkFollowing(); 
+    await checkFollowing();
     await getPostData();
   };
 
